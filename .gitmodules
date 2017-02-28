@@ -1,0 +1,3 @@
+[submodule "ext/tree-sitter/tree-sitter"]
+	path = ext/tree-sitter/tree-sitter
+	url = https://github.com/tree-sitter/tree-sitter.git

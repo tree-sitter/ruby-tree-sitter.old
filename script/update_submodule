@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -e
+
+if [ -z "$1" ]; then
+  BRANCH="master"
+else
+  BRANCH=$1
+fi
+
+echo "Using $BRANCH..."
+
+echo "Checking out tree-sitter"
+echo "---------------------"
+cd ext/tree-sitter/tree-sitter
+git fetch origin
+git checkout $BRANCH && git pull
+sha=`git rev-parse HEAD`
+cd ../../..
+git add ext/tree-sitter/tree-sitter
+git commit -m "Update tree-sitter to $(git config submodule.ext/tree-sitter/tree-sitter.url | sed s_.git\$__)/commit/${sha}"
