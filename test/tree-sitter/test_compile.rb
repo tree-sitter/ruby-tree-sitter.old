@@ -1,12 +1,13 @@
 require 'test_helper'
 
-class TreeSitter::GrammarTest < Minitest::Test
+class TreeSitter::CompileTest < Minitest::Test
   def setup
     @arithmetic = File.read(File.join(fixtures_dir, 'arithmetic', 'grammar.json'))
   end
 
   def test_that_it_parses_grammars
-    assert TreeSitter.compile('Arithmetic', @arithmetic)
+    results = TreeSitter.compile('Arithmetic', @arithmetic)
+    assert_match %r{#include <tree_sitter/parser.h>}, results
   end
 
   def test_that_it_refuses_non_strings
@@ -26,9 +27,4 @@ class TreeSitter::GrammarTest < Minitest::Test
       TreeSitter.compile('Arithmetic', contents)
     end
   end
-
-  # def test_that_it_gets_languages
-  #   TreeSitter.compile('Arithmetic', @arithmetic)
-  #   assert_equal ['Arithmetic'], TreeSitter.languages
-  # end
 end

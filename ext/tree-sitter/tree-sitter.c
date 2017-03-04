@@ -38,17 +38,10 @@ VALUE rb_compile(VALUE self, VALUE rb_name, VALUE rb_grammar) {
     rb_raise(rb_eGrammarError, "Failed to compile %s grammar: %s\n", name, result.error_message);
   }
 
-  // struct languages *map;
-  // map = ALLOC(struct languages);
-  // map->name = name;
-  // map->result = result;
-  //
-  // Data_Wrap_Struct(self, NULL, free_languages, map);
-  //
-  // free(name);
-  // free(grammar);
+  VALUE code = rb_str_new2(result.code);
+  free(result.code);
 
-  return Qtrue;
+  return code;
 }
 
 /*
