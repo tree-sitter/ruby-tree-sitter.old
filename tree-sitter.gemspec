@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.extensions    = ['ext/tree-sitter/extconf.rb']
 
   spec.test_files = spec.files.grep(%r{^test/})
-  spec.executables = ['tree-sitter']
+  # spec.executables = ['tree-sitter']
   spec.require_paths = %w(lib ext)
 
   spec.add_development_dependency 'awesome_print'

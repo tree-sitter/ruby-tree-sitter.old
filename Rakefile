@@ -17,10 +17,6 @@ Rake::Task['clean'].enhance do
   end
 end
 
-task 'bin/tree-sitter' do
-  #noop
-end
-
 # Testing
 require 'rake/testtask'
 
@@ -35,7 +31,7 @@ end
 task 'test:unit' => :compile
 
 desc 'Run unit and conformance tests'
-task :test => %w(test:unit)
+task test: %w(test:unit)
 
 task :console do
   require 'pry'
@@ -49,3 +45,5 @@ task :console do
   ARGV.clear
   Pry.start
 end
+
+task default: [:compile, :test]
