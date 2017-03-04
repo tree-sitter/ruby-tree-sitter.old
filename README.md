@@ -28,8 +28,8 @@ Tree-sitter performs [two different operations](https://github.com/tree-sitter/t
 require 'tree-sitter'
 
 # compile a grammar
-ruby_grammar = File.read("ruby/grammar.json")
-results = TreeSitter.compile(ruby_grammar)
+grammar = File.read("arithmetic/grammar.json")
+results = TreeSitter.compile(grammar)
 ```
 
 ### Running a parser
@@ -49,7 +49,13 @@ Then, you can start making use of the parser:
 
 ``` ruby
 document = TreeSitter::Document.new
-document.language = "arithmetic"
+# provide the function name
+document.language = "tree_sitter_arithmetic"
+document.language = 'tree_sitter_arithmetic'
+# provide the input
+document.input_string = 'a + b * 5'
+# parse it
+document.parse
 ```
 
 ## Development
