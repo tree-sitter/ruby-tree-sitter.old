@@ -46,4 +46,4 @@ task :console do
   Pry.start
 end
 
-task default: [:compile, :test]
+task default: [:test]

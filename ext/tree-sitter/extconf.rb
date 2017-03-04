@@ -2,6 +2,10 @@ require 'mkmf'
 require 'fileutils'
 require 'rbconfig'
 
+if ENV['TREE_SITTER_PARSER_DIR'].nil?
+  abort 'You need to set the TREE_SITTER_PARSER_DIR environment variable! See the README for more information!'
+end
+
 HOST_OS = RbConfig::CONFIG['host_os']
 SITEARCH = RbConfig::CONFIG['sitearch']
 LIBDIR      = RbConfig::CONFIG['libdir']
@@ -28,7 +32,9 @@ unless SITEARCH =~ /^universal-darwin/
   abort 'libruntime is missing.' unless find_library('runtime', 'ts_document_new')
 end
 
-$LDFLAGS << " -L#{TREE_SITTER_OUTPUT_DIR} -lcompiler -lruntime"
+files = Dir.glob("#{ENV['TREE_SITTER_PARSER_DIR']}/**/*.c")
+
+$LDFLAGS << " -L#{TREE_SITTER_OUTPUT_DIR} -I#{TREE_SITTER_INCLUDE_DIR} -lcompiler -lruntime #{files.join(' ')}"
 $CFLAGS << " -O2 -I#{TREE_SITTER_INCLUDE_DIR} -I#{TREE_SITTER_SRC_DIR}"
 
 create_makefile('tree-sitter/treesitter')

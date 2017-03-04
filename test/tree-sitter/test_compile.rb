@@ -6,17 +6,13 @@ class TreeSitter::CompileTest < Minitest::Test
   end
 
   def test_that_it_parses_grammars
-    results = TreeSitter.compile('Arithmetic', @arithmetic)
+    results = TreeSitter.compile(@arithmetic)
     assert_match %r{#include <tree_sitter/parser.h>}, results
   end
 
   def test_that_it_refuses_non_strings
     assert_raises TypeError do
-      TreeSitter.compile(12345, @arithmetic)
-    end
-
-    assert_raises TypeError do
-      TreeSitter.compile('Arithmetic', 1234)
+      TreeSitter.compile(123)
     end
   end
 
@@ -24,7 +20,7 @@ class TreeSitter::CompileTest < Minitest::Test
     # mess up the grammar
     contents = @arithmetic[-123]
     assert_raises TreeSitter::GrammarError do
-      TreeSitter.compile('Arithmetic', contents)
+      TreeSitter.compile(contents)
     end
   end
 end
