@@ -11,11 +11,13 @@ SITEARCH = RbConfig::CONFIG['sitearch']
 LIBDIR      = RbConfig::CONFIG['libdir']
 INCLUDEDIR  = RbConfig::CONFIG['includedir']
 
-ROOT_TMP = File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'tmp'))
+ROOT = File.expand_path(File.join(File.dirname(__FILE__), '..', '..'))
+ROOT_TMP = File.join(ROOT, 'tmp')
 TREE_SITTER_DIR = File.expand_path(File.join(File.dirname(__FILE__), 'tree-sitter'))
 TREE_SITTER_SRC_DIR = File.join(TREE_SITTER_DIR, 'src')
 TREE_SITTER_INCLUDE_DIR = File.join(TREE_SITTER_DIR, 'include')
 TREE_SITTER_OUTPUT_DIR = File.join(TREE_SITTER_DIR, 'out', 'Release')
+BUNDLE_PATH = File.join(ROOT, 'lib', 'tree-sitter', 'treesitter.bundle')
 
 Dir.chdir(TREE_SITTER_DIR) do
   system 'script/configure'
@@ -34,7 +36,8 @@ end
 
 files = Dir.glob("#{ENV['TREE_SITTER_PARSER_DIR']}/**/*.c")
 
+flag = ENV['TRAVIS'] ? '-O0' : '-O2'
 $LDFLAGS << " -L#{TREE_SITTER_OUTPUT_DIR} -I#{TREE_SITTER_INCLUDE_DIR} -lcompiler -lruntime #{files.join(' ')}"
-$CFLAGS << " -O2 -I#{TREE_SITTER_INCLUDE_DIR} -I#{TREE_SITTER_SRC_DIR}"
+$CFLAGS << " #{flag} -I#{TREE_SITTER_INCLUDE_DIR} -I#{TREE_SITTER_SRC_DIR} -DBUNDLE_PATH='\"#{BUNDLE_PATH}\"'"
 
 create_makefile('tree-sitter/treesitter')

@@ -54,7 +54,7 @@ static VALUE rb_document_set_language(VALUE self, VALUE lang) {
 
   const TSLanguage * (*language_func)();
 
-  handle = dlopen("/Users/gjtorikian/Developer/tree-sitter/lib/tree-sitter/treesitter.bundle", RTLD_LAZY);
+  handle = dlopen(BUNDLE_PATH, RTLD_LAZY);
   if (!handle) {
     rb_raise(rb_eDocumentError, "%s", dlerror());
   }
