@@ -6,6 +6,10 @@ if ENV['TREE_SITTER_PARSER_DIR'].nil?
   abort 'You need to set the TREE_SITTER_PARSER_DIR environment variable! See the README for more information!'
 end
 
+def default_tree_sitter_dir
+  File.expand_path(File.join(File.dirname(__FILE__), 'tree-sitter'))
+end
+
 HOST_OS = RbConfig::CONFIG['host_os']
 SITEARCH = RbConfig::CONFIG['sitearch']
 LIBDIR      = RbConfig::CONFIG['libdir']
@@ -13,7 +17,8 @@ INCLUDEDIR  = RbConfig::CONFIG['includedir']
 
 ROOT = File.expand_path(File.join(File.dirname(__FILE__), '..', '..'))
 ROOT_TMP = File.join(ROOT, 'tmp')
-TREE_SITTER_DIR = File.expand_path(File.join(File.dirname(__FILE__), 'tree-sitter'))
+TREE_SITTER_DIR = ENV["TREE_SITTER_DIR"] || default_tree_sitter_dir
+
 TREE_SITTER_SRC_DIR = File.join(TREE_SITTER_DIR, 'src')
 TREE_SITTER_INCLUDE_DIR = File.join(TREE_SITTER_DIR, 'include')
 TREE_SITTER_OUTPUT_DIR = File.join(TREE_SITTER_DIR, 'out', 'Release')
@@ -35,6 +40,9 @@ unless SITEARCH =~ /^universal-darwin/
 end
 
 files = Dir.glob("#{ENV['TREE_SITTER_PARSER_DIR']}/**/*.c")
+files += Dir.glob("#{ENV['TREE_SITTER_PARSER_DIR']}/**/*.cc")
+
+puts "COMPILING #{files}"
 
 flag = ENV['TRAVIS'] ? '-O0' : '-O2'
 $LDFLAGS << " -L#{TREE_SITTER_OUTPUT_DIR} -I#{TREE_SITTER_INCLUDE_DIR} -lcompiler -lruntime #{files.join(' ')}"
