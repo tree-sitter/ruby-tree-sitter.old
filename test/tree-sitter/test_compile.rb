@@ -2,7 +2,7 @@ require 'test_helper'
 
 class TreeSitter::CompileTest < Minitest::Test
   def setup
-    @arithmetic = File.read(File.join(fixtures_dir, 'arithmetic', 'grammar.json'))
+    @arithmetic = File.read(File.join(fixtures_dir, 'parsers', 'arithmetic', 'grammar.json'))
   end
 
   def test_that_it_parses_grammars
