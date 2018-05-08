@@ -1,7 +1,7 @@
 *.so
 *.rbc
 *.bundle
-!/.bundle
+/.bundle
 /.config
 /coverage/
 /InstalledFiles
@@ -11,4 +11,5 @@
 /test/version_tmp/
 /tmp/
 /vendor/gems
+/vendor/cache
 Gemfile.lock
