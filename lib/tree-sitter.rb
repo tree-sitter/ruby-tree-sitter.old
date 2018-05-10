@@ -5,7 +5,7 @@ require 'tree-sitter/node'
 
 begin
   require 'awesome_print'
-  require 'debugger'
+  require 'pry'
 rescue LoadError; end
 
 module TreeSitter
