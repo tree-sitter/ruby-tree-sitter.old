@@ -51,7 +51,7 @@ o_files = c_files.gsub(%r{(?:\S+)#{File::SEPARATOR}(\S+)#{File::SEPARATOR}(\w+)\
 
 flag = ENV['TRAVIS'] ? '-O0' : '-O2'
 
-$LDFLAGS << " -I#{TREE_SITTER_INCLUDE_DIR} -lruntime"
+$LDFLAGS << " -I#{TREE_SITTER_INCLUDE_DIR} -lruntime -lstdc++"
 $CFLAGS << " #{flag} -fPIC -std=c99 -I#{TREE_SITTER_SRC_DIR} -DBUNDLE_PATH='\"#{BUNDLE_PATH}\"'"
 
 create_makefile('tree-sitter/treesitter')
