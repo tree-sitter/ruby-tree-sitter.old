@@ -21,4 +21,4 @@ matrix:
       rvm: 2.5.0
 
 env:
-  -TREE_SITTER_PARSER_DIR=$HOME/ruby-tree-sitter/test/tree-sitter/fixtures/arithmetic
+  -TREE_SITTER_PARSER_DIR=$TRAVIS_BUILD_DIR/test/tree-sitter/fixtures/arithmetic
