@@ -37,6 +37,10 @@ task 'test:unit' => :compile
 desc 'Run unit and conformance tests'
 task test: %w(test:unit)
 
+require 'rubocop/rake_task'
+
+RuboCop::RakeTask.new(:rubocop)
+
 task :console do
   require 'debugger'
   require 'tree-sitter'
