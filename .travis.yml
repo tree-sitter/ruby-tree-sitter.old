@@ -15,6 +15,10 @@ before_install:
 before_script: bundle update
 script: script/cibuild
 
+os:
+  - linux
+  - osx
+
 matrix:
   include:
     - script: bundle exec rake rubocop
