@@ -1,6 +1,4 @@
 #include "tree-sitter.h"
-#include "tree_sitter/compiler.h"
-#include "runtime/document.h"
 
 #include <dlfcn.h>
 
@@ -415,8 +413,6 @@ VALUE rb_compile(VALUE self, VALUE rb_grammar) {
 __attribute__((visibility("default"))) void Init_treesitter() {
   VALUE module;
   module = rb_define_module("TreeSitter");
-
-  rb_define_singleton_method(module, "compile", rb_compile, 1);
 
   rb_eGrammarError = rb_define_class_under(module, "GrammarError", rb_eStandardError);
   rb_eDocumentError = rb_define_class_under(module, "DocumentError", rb_eStandardError);
