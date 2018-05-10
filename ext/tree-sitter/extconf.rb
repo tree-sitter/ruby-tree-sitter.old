@@ -32,11 +32,6 @@ LIB_DIRS = [LIBDIR, OUT_DIR]
 
 dir_config('treesitter', HEADER_DIRS, LIB_DIRS)
 
-# don't even bother to do this check if using OS X's messed up system Ruby: http://git.io/vsxkn
-unless SITEARCH =~ /^universal-darwin/
-  abort 'libruntime is missing.' unless find_library('runtime', 'ts_document_new', TREE_SITTER_SRC_DIR)
-end
-
 FileUtils.mkdir_p(OUT_DIR)
 
 Dir.chdir(THIS_DIR) do
