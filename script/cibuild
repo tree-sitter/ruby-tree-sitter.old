@@ -2,9 +2,13 @@
 
 set -e
 
-export TREE_SITTER_PARSER_DIR=$(pwd)/test/tree-sitter/fixtures/parsers
-git submodule sync
-git submodule update --init
-bundle
-bundle exec rake clean
+if [[ -z "${CI}" ]]; then
+  export TREE_SITTER_PARSER_DIR=$(pwd)/test/tree-sitter/fixtures/parsers
+else
+  git submodule sync
+  git submodule update --init
+  bundle
+  bundle exec rake clean
+fi
+
 bundle exec rake test
