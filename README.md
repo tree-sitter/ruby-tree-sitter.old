@@ -22,16 +22,6 @@ Or install it yourself as:
 
 Tree-sitter performs [two different operations](https://github.com/tree-sitter/tree-sitter#overview): compiling grammars and parsing text with those grammars.
 
-### Compiling a grammar
-
-``` ruby
-require 'tree-sitter'
-
-# compile a grammar
-grammar = File.read("arithmetic/grammar.json")
-results = TreeSitter.compile(grammar)
-```
-
 ### Running a parser
 
 Parsing is a bit different. As tree-sitter spits out C code, at compile/install time, you'll need to provide an absolute path to a directory containing C files that the library can incorporate:
