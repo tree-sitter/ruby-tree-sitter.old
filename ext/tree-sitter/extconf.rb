@@ -34,6 +34,6 @@ files = Dir.glob("#{ENV['TREE_SITTER_PARSER_DIR']}/**/*.c")
 
 flag = ENV['TRAVIS'] ? '-O0' : '-O2'
 $LDFLAGS << " -I#{TREE_SITTER_INCLUDE_DIR} -lruntime #{files.join(' ')}"
-$CFLAGS << " #{flag} -std=c99 -I#{TREE_SITTER_SRC_DIR} -DBUNDLE_PATH='\"#{BUNDLE_PATH}\"'"
+$CFLAGS << " #{flag} -fPIC -std=c99 -I#{TREE_SITTER_SRC_DIR} -DBUNDLE_PATH='\"#{BUNDLE_PATH}\"'"
 
 create_makefile('tree-sitter/treesitter')
