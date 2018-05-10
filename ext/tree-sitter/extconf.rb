@@ -25,7 +25,7 @@ OS         = case RbConfig::CONFIG['host_os']
              when /solaris|bsd/
                :unix
              else
-               raise Error::WebDriverError, "unknown os: #{host_os.inspect}"
+               raise "unknown os: #{host_os.inspect}"
              end
 
 SHARED_EXT = OS == :macos ? 'bundle' : 'so'
