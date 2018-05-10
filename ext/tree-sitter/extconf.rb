@@ -36,13 +36,18 @@ Dir.chdir(THIS_DIR) do
   system 'make runtime'
 end
 
-c_files = Dir.glob("#{ENV['TREE_SITTER_PARSER_DIR']}/**/*.c")
+require 'pry'
+
+c_files = Dir.glob("#{ENV['TREE_SITTER_PARSER_DIR']}/**/*.{c,cc}")
 c_files.each do |c_file|
-  FileUtils.cp(c_file, OUT_DIR)
+  parent_dir = c_file.split(File::SEPARATOR)[-2]
+  dir = File.join(OUT_DIR, parent_dir)
+  FileUtils.mkdir_p(dir)
+  FileUtils.cp(c_file, dir)
 end
 
 c_files = c_files.join(' ')
-o_files = c_files.gsub(%r{\S+/(\w+)\.c(\s|$)}, File.join(OUT_DIR, '\\1.o'))
+o_files = c_files.gsub(%r{(?:\S+)#{File::SEPARATOR}(\S+)#{File::SEPARATOR}(\w+)\.(?:c|cc)(\s|$)}, File.join(OUT_DIR, '\\1', '\\2.o\\3'))
 
 flag = ENV['TRAVIS'] ? '-O0' : '-O2'
 

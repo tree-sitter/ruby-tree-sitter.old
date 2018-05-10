@@ -35,7 +35,7 @@ $ TREE_SITTER_PARSER_DIR=/somewhere/code bundle install
 $ TREE_SITTER_PARSER_DIR=/somewhere/code bundle exec rake compile
 ```
 
-This directory is appended with the glob suffix `**/*.c`, so it can contain as many nested parser files as necessary.
+This directory is appended with the glob suffix `**/*.{c,cc}`, so it can contain as many nested parser files as necessary.
 
 Then, you can start making use of the parser:
 

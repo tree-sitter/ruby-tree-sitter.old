@@ -391,29 +391,6 @@ static VALUE rb_point_column(VALUE self) {
   return UINT2NUM(point->ts_point.column);
 }
 
-/*
- * Public: Compiles a new grammar.
- *
- * rb_grammar - A {String} containing the language grammar in JSON.
- *
- */
-VALUE rb_compile(VALUE self, VALUE rb_grammar) {
-  Check_Type(rb_grammar, T_STRING);
-
-  const char *grammar = StringValueCStr(rb_grammar);
-  TSCompileResult result = ts_compile_grammar(grammar);
-
-  if (result.error_type != TSCompileErrorTypeNone) {
-    free(result.code);
-    rb_raise(rb_eGrammarError, "Failed to compile grammar: %s\n", result.error_message);
-  }
-
-  VALUE code = rb_str_new2(result.code);
-  free(result.code);
-
-  return code;
-}
-
 __attribute__((visibility("default"))) void Init_treesitter() {
   VALUE module;
   module = rb_define_module("TreeSitter");
