@@ -11,9 +11,13 @@ Rake::ExtensionTask.new('tree-sitter', gem_spec) do |ext|
 end
 
 Rake::Task['clean'].enhance do
-  ext_dir = File.join(File.dirname(__FILE__), 'ext', 'tree-sitter', 'tree-sitter')
+  ext_dir = File.join(File.dirname(__FILE__), 'ext', 'tree-sitter')
   Dir.chdir(ext_dir) do
-    `make clean`
+    puts `make clean`
+  end
+  tree_sitter_dir = File.join(ext_dir, 'tree-sitter')
+  Dir.chdir(tree_sitter_dir) do
+    puts `script/clean`
   end
 end
 
@@ -33,8 +37,12 @@ task 'test:unit' => :compile
 desc 'Run unit and conformance tests'
 task test: %w(test:unit)
 
+require 'rubocop/rake_task'
+
+RuboCop::RakeTask.new(:rubocop)
+
 task :console do
-  require 'pry'
+  require 'debugger'
   require 'tree-sitter'
 
   def reload!
@@ -44,6 +52,12 @@ task :console do
 
   ARGV.clear
   Pry.start
+end
+
+desc 'Pretty format C code'
+task :format do
+  puts `astyle -n --indent=spaces=2 --style=1tbs --keep-one-line-blocks \
+        $(ack -n -f --type=cc ext/tree-sitter/)`
 end
 
 task default: [:test]

@@ -12,9 +12,10 @@ class TreeSitter::DocumentTest < Minitest::Test
     end
   end
 
+  # TODO
   def test_that_it_accepts_languages
     document = TreeSitter::Document.new
-    document.language = 'tree_sitter_arithmetic'
+    document.language = 'tree_sitter_arithmetic' # rubocop:disable Lint/UselessSetterCall
   end
 
   def test_that_unknown_languages_error

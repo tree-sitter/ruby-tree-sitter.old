@@ -8,6 +8,8 @@
 #include "ruby.h"
 #include "ruby/encoding.h"
 
+#include "runtime/document.h"
+
 #define CSTR2SYM(s) (ID2SYM(rb_intern((s))))
 
 void Init_treesitter();

@@ -1,9 +1,9 @@
 language: ruby
 cache: bundler
 rvm:
-  - 2.2
-  - 2.1
-  - 2.0
+  - 2.3.6
+  - 2.4.3
+  - 2.5.0
 git:
   depth: 10
 
@@ -14,3 +14,15 @@ before_install:
 
 before_script: bundle update
 script: script/cibuild
+
+os:
+  - linux
+  - osx
+
+matrix:
+  include:
+    - script: bundle exec rake rubocop
+      rvm: 2.5.0
+
+env:
+  -TREE_SITTER_PARSER_DIR=$TRAVIS_BUILD_DIR/test/tree-sitter/fixtures/arithmetic

@@ -1,0 +1,17 @@
+inherit_gem:
+  rubocop-github:
+    - config/default.yml
+
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: single_quotes
+
+RequireParentheses:
+  Enabled: true
+
+AllCops:
+  Exclude:
+    - 'ext/tree-sitter/tree-sitter/**/*'
+    - 'vendor/**/*'
+    - 'tmp/**/*'
+    - 'bin/**/*'
