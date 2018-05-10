@@ -17,7 +17,7 @@ class TreeSitter::DocumentTest < Minitest::Test
   # TODO
   def test_that_it_accepts_languages
     document = TreeSitter::Document.new
-    document.language = 'tree_sitter_python'
+    document.language = 'tree_sitter_python' # rubocop:disable Lint/UselessSetterCall
   end
 
   def test_that_unknown_languages_error
