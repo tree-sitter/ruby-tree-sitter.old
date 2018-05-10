@@ -54,4 +54,10 @@ task :console do
   Pry.start
 end
 
+desc 'Pretty format C code'
+task :format do
+  puts `astyle -n --indent=spaces=2 --style=1tbs --keep-one-line-blocks \
+        $(ack -n -f --type=cc ext/tree-sitter/)`
+end
+
 task default: [:test]

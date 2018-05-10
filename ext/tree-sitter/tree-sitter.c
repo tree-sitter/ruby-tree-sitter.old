@@ -28,7 +28,8 @@ VALUE rb_documment_alloc(VALUE self)
  * Public: Creates a new document
  *
  */
-static VALUE rb_document_new(VALUE self) {
+static VALUE rb_document_new(VALUE self)
+{
   TSDocument *document;
 
   Data_Get_Struct(self, TSDocument, document);
@@ -43,7 +44,8 @@ static VALUE rb_document_new(VALUE self) {
  *
  * Returns nothing.
  */
-static VALUE rb_document_set_language(VALUE self, VALUE lang) {
+static VALUE rb_document_set_language(VALUE self, VALUE lang)
+{
   TSDocument *document;
   char *language_name;
   void *handle;
@@ -82,7 +84,8 @@ static VALUE rb_document_set_language(VALUE self, VALUE lang) {
  *
  * Returns nothing.
  */
-static VALUE rb_document_set_input_string(VALUE self, VALUE str) {
+static VALUE rb_document_set_input_string(VALUE self, VALUE str)
+{
   TSDocument *document;
   Check_Type(str, T_STRING);
   char *string = StringValueCStr(str);
@@ -99,7 +102,8 @@ static VALUE rb_document_set_input_string(VALUE self, VALUE str) {
  *
  * Returns nothing.
  */
-static VALUE rb_document_parse(VALUE self) {
+static VALUE rb_document_parse(VALUE self)
+{
   TSDocument *document;
 
   Data_Get_Struct(self, TSDocument, document);
