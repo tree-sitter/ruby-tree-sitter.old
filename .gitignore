@@ -17,3 +17,5 @@ Gemfile.lock
 ext/tree-sitter/out/*.o
 ext/tree-sitter/out/*.c
 ext/tree-sitter/out/*.a
+
+.byebug_history
