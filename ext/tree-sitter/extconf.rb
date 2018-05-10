@@ -30,6 +30,8 @@ LIB_DIRS = [LIBDIR, OUT_DIR]
 
 dir_config('treesitter', HEADER_DIRS, LIB_DIRS)
 
+FileUtils.mkdir_p(OUT_DIR)
+
 Dir.chdir(THIS_DIR) do
   system 'make runtime'
 end

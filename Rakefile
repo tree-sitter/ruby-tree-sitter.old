@@ -13,11 +13,7 @@ end
 Rake::Task['clean'].enhance do
   ext_dir = File.join(File.dirname(__FILE__), 'ext', 'tree-sitter')
   Dir.chdir(ext_dir) do
-    puts `make clean`
-  end
-  tree_sitter_dir = File.join(ext_dir, 'tree-sitter')
-  Dir.chdir(tree_sitter_dir) do
-    puts `script/clean`
+    FileUtils.rm_rf('out')
   end
 end
 
