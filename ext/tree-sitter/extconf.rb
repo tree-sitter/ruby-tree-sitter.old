@@ -45,10 +45,34 @@ Dir.chdir(THIS_DIR) do
   system 'make runtime'
 end
 
-files = Dir.glob("#{ENV['TREE_SITTER_PARSER_DIR']}/**/*.c")
+c_files = Dir.glob("#{ENV['TREE_SITTER_PARSER_DIR']}/**/*.c")
+c_files.each do |c_file|
+  FileUtils.cp(c_file, OUT_DIR)
+end
+
+c_files = c_files.join(' ')
+o_files = c_files.gsub(%r{\S+/(\w+)\.c(\s|$)}, File.join(OUT_DIR, '\\1.o'))
 
 flag = ENV['TRAVIS'] ? '-O0' : '-O2'
-$LDFLAGS << " -I#{TREE_SITTER_INCLUDE_DIR} -lruntime #{files.join(' ')}"
+
+$LDFLAGS << " -I#{TREE_SITTER_INCLUDE_DIR} -lruntime"
 $CFLAGS << " #{flag} -fPIC -std=c99 -I#{TREE_SITTER_SRC_DIR} -DBUNDLE_PATH='\"#{BUNDLE_PATH}\"'"
 
 create_makefile('tree-sitter/treesitter')
+
+makefile = File.read 'Makefile'
+
+# tack on parser files as part of compilation
+lines = makefile.lines.map do |line|
+  if line.start_with?('ORIG_SRCS =')
+    line.sub /$/, " #{c_files}"
+  elsif line.start_with?('OBJS =')
+    line.sub /$/, " #{o_files}"
+  else
+    line
+  end
+end
+
+File.open 'Makefile', 'w' do |f|
+  f.puts lines
+end
