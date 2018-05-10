@@ -8,3 +8,10 @@ Style/StringLiterals:
 
 RequireParentheses:
   Enabled: true
+
+AllCops:
+  Exclude:
+    - 'ext/tree-sitter/tree-sitter/**/*'
+    - 'vendor/**/*'
+    - 'tmp/**/*'
+    - 'bin/**/*'
