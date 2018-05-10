@@ -19,3 +19,6 @@ matrix:
   include:
     - script: bundle exec rake rubocop
       rvm: 2.5.0
+
+env:
+  -TREE_SITTER_PARSER_DIR=test/tree-sitter/fixtures/arithmetic
