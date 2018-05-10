@@ -6,6 +6,10 @@ if ENV['TREE_SITTER_PARSER_DIR'].nil?
   abort 'You need to set the `TREE_SITTER_PARSER_DIR` environment variable! See the README for more information.'
 end
 
+unless Dir.exist?(ENV['TREE_SITTER_PARSER_DIR'])
+  abort "The `TREE_SITTER_PARSER_DIR` environment variable does not point to a real directory: `#{ENV['TREE_SITTER_PARSER_DIR']}`! See the README for more information."
+end
+
 HOST_OS = RbConfig::CONFIG['host_os']
 SITEARCH = RbConfig::CONFIG['sitearch']
 LIBDIR      = RbConfig::CONFIG['libdir']
