@@ -10,6 +10,7 @@ RequireParentheses:
   Enabled: true
 
 AllCops:
+  TargetRubyVersion: 2.4
   Exclude:
     - 'ext/tree-sitter/tree-sitter/**/*'
     - 'vendor/**/*'

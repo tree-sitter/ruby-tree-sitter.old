@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'mkmf'
 require 'fileutils'
 require 'rbconfig'
@@ -13,7 +15,7 @@ end
 SITEARCH = RbConfig::CONFIG['sitearch']
 LIBDIR      = RbConfig::CONFIG['libdir']
 INCLUDEDIR  = RbConfig::CONFIG['includedir']
-DLEXT = RbConfig::CONFIG["DLEXT"]
+DLEXT = RbConfig::CONFIG['DLEXT']
 
 ROOT = File.expand_path(File.join(File.dirname(__FILE__), '..', '..'))
 THIS_DIR = File.dirname(__FILE__)

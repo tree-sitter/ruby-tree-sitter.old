@@ -122,11 +122,13 @@ typedef struct point_type {
   TSPoint ts_point;
 } Point;
 
-static void rb_node_free(void *n) {
+static void rb_node_free(void *n)
+{
   free(n);
 }
 
-static VALUE rb_new_node(TSNode ts_node, TSDocument *ts_document) {
+static VALUE rb_new_node(TSNode ts_node, TSDocument *ts_document)
+{
   AstNode *node = malloc(sizeof(AstNode));
   node->ts_node = ts_node;
   node->ts_document = ts_document;
@@ -138,7 +140,8 @@ static VALUE rb_new_node(TSNode ts_node, TSDocument *ts_document) {
  *
  * Returns a Node.
  */
-static VALUE rb_document_root_node(VALUE self) {
+static VALUE rb_document_root_node(VALUE self)
+{
   TSDocument *document;
 
   Data_Get_Struct(self, TSDocument, document);
@@ -152,7 +155,8 @@ static VALUE rb_document_root_node(VALUE self) {
  *
  * Returns a String.
  */
-static VALUE rb_node_to_s(VALUE self) {
+static VALUE rb_node_to_s(VALUE self)
+{
   AstNode *node;
   Data_Get_Struct(self, AstNode, node);
 
@@ -164,14 +168,16 @@ static VALUE rb_node_to_s(VALUE self) {
  *
  * Returns a String.
  */
-static VALUE rb_node_type(VALUE self) {
+static VALUE rb_node_type(VALUE self)
+{
   AstNode *node;
   Data_Get_Struct(self, AstNode, node);
 
   return rb_str_new_cstr(ts_node_type(node->ts_node, node->ts_document));
 }
 
-static void rb_point_free(void *p) {
+static void rb_point_free(void *p)
+{
   free(p);
 }
 
@@ -180,7 +186,8 @@ static void rb_point_free(void *p) {
  *
  * Returns a Point.
  */
-static VALUE rb_node_start_point(VALUE self) {
+static VALUE rb_node_start_point(VALUE self)
+{
   AstNode *node;
   Data_Get_Struct(self, AstNode, node);
 
@@ -197,7 +204,8 @@ static VALUE rb_node_start_point(VALUE self) {
  *
  * Returns a Point.
  */
-static VALUE rb_node_end_point(VALUE self) {
+static VALUE rb_node_end_point(VALUE self)
+{
   AstNode *node;
   Data_Get_Struct(self, AstNode, node);
 
@@ -214,7 +222,8 @@ static VALUE rb_node_end_point(VALUE self) {
  *
  * Returns a Boolean.
  */
-static VALUE rb_node_is_named(VALUE self) {
+static VALUE rb_node_is_named(VALUE self)
+{
   AstNode *node;
   Data_Get_Struct(self, AstNode, node);
 
@@ -226,7 +235,8 @@ static VALUE rb_node_is_named(VALUE self) {
  *
  * Returns an Integer.
  */
-static VALUE rb_node_child_count(VALUE self) {
+static VALUE rb_node_child_count(VALUE self)
+{
   AstNode *node;
   Data_Get_Struct(self, AstNode, node);
 
@@ -242,7 +252,8 @@ static VALUE rb_node_child_count(VALUE self) {
  *
  * Returns an Integer.
  */
-static VALUE rb_node_named_child_count(VALUE self) {
+static VALUE rb_node_named_child_count(VALUE self)
+{
   AstNode *node;
   Data_Get_Struct(self, AstNode, node);
 
@@ -258,7 +269,8 @@ static VALUE rb_node_named_child_count(VALUE self) {
  *
  * Returns a Node or Nil.
  */
-static VALUE rb_node_first_child(VALUE self) {
+static VALUE rb_node_first_child(VALUE self)
+{
   AstNode *node;
   Data_Get_Struct(self, AstNode, node);
 
@@ -276,7 +288,8 @@ static VALUE rb_node_first_child(VALUE self) {
  *
  * Returns a Node or Nil.
  */
-static VALUE rb_node_first_named_child(VALUE self) {
+static VALUE rb_node_first_named_child(VALUE self)
+{
   AstNode *node;
   Data_Get_Struct(self, AstNode, node);
 
@@ -294,7 +307,8 @@ static VALUE rb_node_first_named_child(VALUE self) {
  *
  * Returns a Node or Nil.
  */
-static VALUE rb_node_last_child(VALUE self) {
+static VALUE rb_node_last_child(VALUE self)
+{
   AstNode *node;
   Data_Get_Struct(self, AstNode, node);
 
@@ -312,7 +326,8 @@ static VALUE rb_node_last_child(VALUE self) {
  *
  * Returns a Node or Nil.
  */
-static VALUE rb_node_last_named_child(VALUE self) {
+static VALUE rb_node_last_named_child(VALUE self)
+{
   AstNode *node;
   Data_Get_Struct(self, AstNode, node);
 
@@ -330,7 +345,8 @@ static VALUE rb_node_last_named_child(VALUE self) {
  *
  * Returns a Node or Nil.
  */
-static VALUE rb_node_child(VALUE self, VALUE child_index) {
+static VALUE rb_node_child(VALUE self, VALUE child_index)
+{
   Check_Type(child_index, T_FIXNUM);
   uint32_t i = NUM2UINT(child_index);
 
@@ -352,7 +368,8 @@ static VALUE rb_node_child(VALUE self, VALUE child_index) {
  *
  * Returns a Node or Nil.
  */
-static VALUE rb_node_named_child(VALUE self, VALUE child_index) {
+static VALUE rb_node_named_child(VALUE self, VALUE child_index)
+{
   Check_Type(child_index, T_FIXNUM);
   uint32_t i = NUM2UINT(child_index);
 
@@ -374,7 +391,8 @@ static VALUE rb_node_named_child(VALUE self, VALUE child_index) {
  *
  * Returns an Integer.
  */
-static VALUE rb_point_row(VALUE self) {
+static VALUE rb_point_row(VALUE self)
+{
   Point *point;
   Data_Get_Struct(self, Point, point);
   return UINT2NUM(point->ts_point.row);
@@ -385,13 +403,15 @@ static VALUE rb_point_row(VALUE self) {
  *
  * Returns an Integer.
  */
-static VALUE rb_point_column(VALUE self) {
+static VALUE rb_point_column(VALUE self)
+{
   Point *point;
   Data_Get_Struct(self, Point, point);
   return UINT2NUM(point->ts_point.column);
 }
 
-__attribute__((visibility("default"))) void Init_treesitter() {
+__attribute__((visibility("default"))) void Init_treesitter()
+{
   VALUE module;
   module = rb_define_module("TreeSitter");
 
