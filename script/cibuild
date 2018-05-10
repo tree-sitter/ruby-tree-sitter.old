@@ -2,6 +2,7 @@
 
 set -e
 
+export TREE_SITTER_PARSER_DIR=$(pwd)/test/tree-sitter/fixtures/parsers
 git submodule sync
 git submodule update --init
 bundle
