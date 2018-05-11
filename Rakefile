@@ -40,7 +40,7 @@ require 'rubocop/rake_task'
 RuboCop::RakeTask.new(:rubocop)
 
 task :console do
-  require 'debugger'
+  require 'pry'
   require 'tree-sitter'
 
   def reload!
