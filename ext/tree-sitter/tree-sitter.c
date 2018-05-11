@@ -6,5 +6,4 @@ __attribute__((visibility("default"))) void Init_treesitter()
 
   init_document();
   init_node();
-  init_point();
 }

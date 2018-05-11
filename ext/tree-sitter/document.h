@@ -6,7 +6,6 @@
 #include "tree-sitter.h"
 
 static VALUE rb_eDocumentError;
-static VALUE rb_cDocument;
 
 void init_document();
 static VALUE rb_document_alloc(VALUE self);

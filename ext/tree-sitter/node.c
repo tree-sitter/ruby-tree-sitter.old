@@ -1,5 +1,8 @@
 #include "node.h"
 
+VALUE rb_cNode;
+VALUE rb_cPoint;
+
 static void rb_node_free(void *n)
 {
   free(n);
@@ -248,6 +251,30 @@ VALUE rb_node_named_child(VALUE self, VALUE child_index)
   }
 }
 
+/*
+ * Public: Return the row for a point.
+ *
+ * Returns an {Integer}.
+ */
+VALUE rb_point_row(VALUE self)
+{
+  Point *point;
+  Data_Get_Struct(self, Point, point);
+  return UINT2NUM(point->ts_point.row);
+}
+
+/*
+ * Public: Return the column for a point.
+ *
+ * Returns an {Integer}.
+ */
+VALUE rb_point_column(VALUE self)
+{
+  Point *point;
+  Data_Get_Struct(self, Point, point);
+  return UINT2NUM(point->ts_point.column);
+}
+
 void init_node()
 {
   VALUE tree_sitter = rb_define_module("TreeSitter");
@@ -266,4 +293,8 @@ void init_node()
   rb_define_method(rb_cNode, "named_child", rb_node_named_child, 1);
   rb_define_method(rb_cNode, "start_position", rb_node_start_point, 0);
   rb_define_method(rb_cNode, "end_position", rb_node_end_point, 0);
+
+  rb_cPoint = rb_define_class_under(rb_cNode, "Point", rb_cObject);
+  rb_define_method(rb_cPoint, "row", rb_point_row, 0);
+  rb_define_method(rb_cPoint, "column", rb_point_column, 0);
 }

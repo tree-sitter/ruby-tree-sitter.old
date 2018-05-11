@@ -11,7 +11,6 @@
 
 #include "document.h"
 #include "node.h"
-#include "point.h"
 
 #define CSTR2SYM(s) (ID2SYM(rb_intern((s))))
 

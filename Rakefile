@@ -13,10 +13,10 @@ Rake::ExtensionTask.new('tree-sitter', gem_spec) do |ext|
 end
 
 Rake::Task['clean'].enhance do
-  ext_dir = File.join(File.dirname(__FILE__), 'ext', 'tree-sitter')
-  Dir.chdir(ext_dir) do
-    FileUtils.rm_rf('out')
-  end
+  # ext_dir = File.join(File.dirname(__FILE__), 'ext', 'tree-sitter')
+  # Dir.chdir(ext_dir) do
+  #   FileUtils.rm_rf('out')
+  # end
 end
 
 # Testing

@@ -1,5 +1,7 @@
 #include "document.h"
 
+VALUE rb_cDocument;
+
 /*
  * Internal: Allocate a new document
  *
@@ -49,7 +51,7 @@ VALUE rb_document_set_language(VALUE self, VALUE lang)
 
   handle = dlopen(BUNDLE_PATH, RTLD_LAZY);
   if (!handle) {
-    rb_raise(rb_eDocumentError, "%d", dlerror());
+    rb_raise(rb_eDocumentError, "%s", dlerror());
   }
 
   dlerror();    /* Clear any existing error */
@@ -125,7 +127,7 @@ void init_document()
 
   rb_eDocumentError = rb_define_class_under(tree_sitter, "DocumentError", rb_eStandardError);
 
-  rb_cDocument = rb_define_class_under(tree_sitter, "Document", rb_cObject);
+  VALUE rb_cDocument = rb_define_class_under(tree_sitter, "Document", rb_cObject);
   rb_define_alloc_func(rb_cDocument, rb_document_alloc);
   rb_define_method(rb_cDocument, "initialize", rb_document_new, 0);
   rb_define_method(rb_cDocument, "language=", rb_document_set_language, 1);

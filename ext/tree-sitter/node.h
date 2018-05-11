@@ -10,7 +10,9 @@ typedef struct ast_node_type {
   TSDocument *ts_document;
 } AstNode;
 
-static VALUE rb_cNode;
+typedef struct point_type {
+  TSPoint ts_point;
+} Point;
 
 void init_node();
 static void rb_node_free(void *n);
