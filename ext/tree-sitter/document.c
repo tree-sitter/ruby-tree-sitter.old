@@ -21,14 +21,26 @@ static VALUE rb_document_alloc(VALUE self)
  * Public: Creates a new document
  *
  */
-VALUE rb_document_new(VALUE self)
+VALUE rb_document_new(VALUE self, VALUE rb_input_string, VALUE rb_options)
 {
   TSDocument *document;
+  VALUE rb_language;
+
+  Check_Type(rb_input_string, T_STRING);
+  Check_Type (rb_options, T_HASH);
+
+  rb_language = rb_hash_aref(rb_options, CSTR2SYM("language"));
+  Check_Type(rb_language, T_STRING);
 
   Data_Get_Struct(self, TSDocument, document);
 
+  rb_document_set_language(self, rb_language);
+  rb_document_set_input_string(self, rb_input_string);
+  rb_document_parse(self);
+
   return self;
 }
+
 
 /*
  * Public: Set the language type of a document.
@@ -77,15 +89,15 @@ VALUE rb_document_set_language(VALUE self, VALUE lang)
  *
  * Returns nothing.
  */
-VALUE rb_document_set_input_string(VALUE self, VALUE str)
+VALUE rb_document_set_input_string(VALUE self, VALUE rb_input_string)
 {
   TSDocument *document;
-  Check_Type(str, T_STRING);
-  char *string = StringValueCStr(str);
+  Check_Type(rb_input_string, T_STRING);
+  char *c_string = StringValueCStr(rb_input_string);
 
   Data_Get_Struct(self, TSDocument, document);
 
-  ts_document_set_input_string(document, string);
+  ts_document_set_input_string(document, c_string);
 
   return Qnil;
 }
@@ -93,7 +105,7 @@ VALUE rb_document_set_input_string(VALUE self, VALUE str)
 /*
  * Public: Parses the document string.
  *
- * Returns nothing.
+ * Returns true if successful.
  */
 VALUE rb_document_parse(VALUE self)
 {
@@ -103,7 +115,7 @@ VALUE rb_document_parse(VALUE self)
 
   ts_document_parse(document);
 
-  return Qnil;
+  return Qtrue;
 }
 
 /*
@@ -129,7 +141,7 @@ void init_document()
 
   VALUE rb_cDocument = rb_define_class_under(tree_sitter, "Document", rb_cObject);
   rb_define_alloc_func(rb_cDocument, rb_document_alloc);
-  rb_define_method(rb_cDocument, "initialize", rb_document_new, 0);
+  rb_define_method(rb_cDocument, "initialize", rb_document_new, 2);
   rb_define_method(rb_cDocument, "language=", rb_document_set_language, 1);
   rb_define_method(rb_cDocument, "input_string=", rb_document_set_input_string, 1);
   rb_define_method(rb_cDocument, "parse", rb_document_parse, 0);
