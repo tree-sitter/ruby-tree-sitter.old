@@ -3,7 +3,7 @@
 /*
  * Public: Return the row for a point.
  *
- * Returns an Integer.
+ * Returns an {Integer}.
  */
 VALUE rb_point_row(VALUE self)
 {
@@ -15,7 +15,7 @@ VALUE rb_point_row(VALUE self)
 /*
  * Public: Return the column for a point.
  *
- * Returns an Integer.
+ * Returns an {Integer}.
  */
 VALUE rb_point_column(VALUE self)
 {

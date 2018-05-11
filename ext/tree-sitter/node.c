@@ -16,7 +16,7 @@ VALUE rb_new_node(TSNode ts_node, TSDocument *ts_document)
 /*
  * Public: Render the node and its children as a string.
  *
- * Returns a String.
+ * Returns a {String}.
  */
 VALUE rb_node_to_s(VALUE self)
 {
@@ -29,7 +29,7 @@ VALUE rb_node_to_s(VALUE self)
 /*
  * Public: The node type.
  *
- * Returns a String.
+ * Returns a {String}.
  */
 VALUE rb_node_type(VALUE self)
 {
@@ -47,7 +47,7 @@ void rb_point_free(void *p)
 /*
  * Public: Get the starting position for a node.
  *
- * Returns a Point.
+ * Returns a {Point}.
  */
 VALUE rb_node_start_point(VALUE self)
 {
@@ -55,7 +55,6 @@ VALUE rb_node_start_point(VALUE self)
   Data_Get_Struct(self, AstNode, node);
 
   TSPoint start = ts_node_start_point(node->ts_node);
-
   Point *point = malloc(sizeof(Point));
   point->ts_point = start;
 
@@ -65,7 +64,7 @@ VALUE rb_node_start_point(VALUE self)
 /*
  * Public: Get the ending position for a node.
  *
- * Returns a Point.
+ * Returns a {Point}.
  */
 VALUE rb_node_end_point(VALUE self)
 {
@@ -83,7 +82,7 @@ VALUE rb_node_end_point(VALUE self)
 /*
  * Public: Does the node have a name?
  *
- * Returns a Boolean.
+ * Returns a {Boolean}.
  */
 VALUE rb_node_is_named(VALUE self)
 {
@@ -96,7 +95,7 @@ VALUE rb_node_is_named(VALUE self)
 /*
  * Public: The number of named and unnamed children.
  *
- * Returns an Integer.
+ * Returns an {Integer}.
  */
 VALUE rb_node_child_count(VALUE self)
 {
@@ -113,7 +112,7 @@ VALUE rb_node_child_count(VALUE self)
 /*
  * Public: The number of named children.
  *
- * Returns an Integer.
+ * Returns an {Integer}.
  */
 VALUE rb_node_named_child_count(VALUE self)
 {
@@ -130,7 +129,7 @@ VALUE rb_node_named_child_count(VALUE self)
 /*
  * Public: Return the first child.
  *
- * Returns a Node or Nil.
+ * Returns a {Node} or nil.
  */
 VALUE rb_node_first_child(VALUE self)
 {
@@ -149,7 +148,7 @@ VALUE rb_node_first_child(VALUE self)
 /*
  * Public: Return the first named child.
  *
- * Returns a Node or Nil.
+ * Returns a {Node} or nil.
  */
 VALUE rb_node_first_named_child(VALUE self)
 {
@@ -168,7 +167,7 @@ VALUE rb_node_first_named_child(VALUE self)
 /*
  * Public: Return the last child.
  *
- * Returns a Node or Nil.
+ * Returns a {Node} or nil.
  */
 VALUE rb_node_last_child(VALUE self)
 {
@@ -187,7 +186,7 @@ VALUE rb_node_last_child(VALUE self)
 /*
  * Public: Return the last named child.
  *
- * Returns a Node or Nil.
+ * Returns a {Node} or nil.
  */
 VALUE rb_node_last_named_child(VALUE self)
 {
@@ -206,7 +205,7 @@ VALUE rb_node_last_named_child(VALUE self)
 /*
  * Public: Return the child at the specified index.
  *
- * Returns a Node or Nil.
+ * Returns a {Node} or nil.
  */
 VALUE rb_node_child(VALUE self, VALUE child_index)
 {
@@ -229,7 +228,7 @@ VALUE rb_node_child(VALUE self, VALUE child_index)
 /*
  * Public: Return the named child at the specified index.
  *
- * Returns a Node or Nil.
+ * Returns a {Node} or nil.
  */
 VALUE rb_node_named_child(VALUE self, VALUE child_index)
 {

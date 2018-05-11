@@ -107,7 +107,7 @@ VALUE rb_document_parse(VALUE self)
 /*
  * Public: Returns the document root node.
  *
- * Returns a Node.
+ * Returns a {Node}.
  */
 VALUE rb_document_root_node(VALUE self)
 {
