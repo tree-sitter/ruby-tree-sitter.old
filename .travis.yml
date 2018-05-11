@@ -13,7 +13,7 @@ before_install:
   - gem install bundler
 
 before_script: bundle update
-script: script/cibuild
+script: script/test
 
 os:
   - linux
@@ -25,4 +25,4 @@ matrix:
       rvm: 2.5.0
 
 env:
-  -TREE_SITTER_PARSER_DIR=$TRAVIS_BUILD_DIR/test/tree-sitter/fixtures/arithmetic
+  -TREE_SITTER_PARSER_DIR=$TRAVIS_BUILD_DIR/test/tree-sitter/fixtures/parsers

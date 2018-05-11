@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'mkmf'
 require 'fileutils'
 require 'rbconfig'
@@ -13,7 +15,7 @@ end
 SITEARCH = RbConfig::CONFIG['sitearch']
 LIBDIR      = RbConfig::CONFIG['libdir']
 INCLUDEDIR  = RbConfig::CONFIG['includedir']
-DLEXT = RbConfig::CONFIG["DLEXT"]
+DLEXT = RbConfig::CONFIG['DLEXT']
 
 ROOT = File.expand_path(File.join(File.dirname(__FILE__), '..', '..'))
 THIS_DIR = File.dirname(__FILE__)
@@ -30,21 +32,26 @@ LIB_DIRS = [LIBDIR, OUT_DIR]
 
 dir_config('treesitter', HEADER_DIRS, LIB_DIRS)
 
+FileUtils.mkdir_p(OUT_DIR)
+
 Dir.chdir(THIS_DIR) do
   system 'make runtime'
 end
 
-c_files = Dir.glob("#{ENV['TREE_SITTER_PARSER_DIR']}/**/*.c")
+c_files = Dir.glob("#{ENV['TREE_SITTER_PARSER_DIR']}/**/*.{c,cc}")
 c_files.each do |c_file|
-  FileUtils.cp(c_file, OUT_DIR)
+  parent_dir = c_file.split(File::SEPARATOR)[-2]
+  dir = File.join(OUT_DIR, parent_dir)
+  FileUtils.mkdir_p(dir)
+  FileUtils.cp(c_file, dir)
 end
 
 c_files = c_files.join(' ')
-o_files = c_files.gsub(%r{\S+/(\w+)\.c(\s|$)}, File.join(OUT_DIR, '\\1.o'))
+o_files = c_files.gsub(%r{(?:\S+)#{File::SEPARATOR}(\S+)#{File::SEPARATOR}(\w+)\.(?:c|cc)(\s|$)}, File.join(OUT_DIR, '\\1', '\\2.o\\3'))
 
 flag = ENV['TRAVIS'] ? '-O0' : '-O2'
 
-$LDFLAGS << " -I#{TREE_SITTER_INCLUDE_DIR} -lruntime"
+$LDFLAGS << " -I#{TREE_SITTER_INCLUDE_DIR} -lruntime -lstdc++"
 $CFLAGS << " #{flag} -fPIC -std=c99 -I#{TREE_SITTER_SRC_DIR} -DBUNDLE_PATH='\"#{BUNDLE_PATH}\"'"
 
 create_makefile('tree-sitter/treesitter')
