@@ -38,8 +38,6 @@ Dir.chdir(THIS_DIR) do
   system 'make runtime'
 end
 
-require 'pry'
-
 c_files = Dir.glob("#{ENV['TREE_SITTER_PARSER_DIR']}/**/*.{c,cc}")
 c_files.each do |c_file|
   parent_dir = c_file.split(File::SEPARATOR)[-2]
