@@ -12,11 +12,13 @@ Rake::ExtensionTask.new('tree-sitter', gem_spec) do |ext|
   ext.lib_dir = File.join('lib', 'tree-sitter')
 end
 
-Rake::Task['clean'].enhance do
-  # ext_dir = File.join(File.dirname(__FILE__), 'ext', 'tree-sitter')
-  # Dir.chdir(ext_dir) do
-  #   FileUtils.rm_rf('out')
-  # end
+desc 'Wipe project (including tree-sitter files)'
+task :clean_hard do
+  Rake::Task['clean'].invoke
+  ext_dir = File.join(File.dirname(__FILE__), 'ext', 'tree-sitter')
+  Dir.chdir(ext_dir) do
+    FileUtils.rm_rf('out')
+  end
 end
 
 # Testing
@@ -52,10 +54,11 @@ task :console do
   Pry.start
 end
 
-desc 'Pretty format C code'
+desc 'Pretty format code'
 task :format do
   puts `astyle -n --indent=spaces=2 --style=1tbs --keep-one-line-blocks \
         $(ack -n -f --type=cc ext/tree-sitter/)`
+  puts `bundle exec rubocop -a`
 end
 
 task default: [:test]
