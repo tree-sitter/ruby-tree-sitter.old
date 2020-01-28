@@ -51,7 +51,7 @@ static VALUE rb_document_set_language(VALUE self, VALUE ptr)
  *
  * Returns nothing.
  */
-VALUE rb_document_set_input_string(VALUE self, VALUE rb_input_string)
+static VALUE rb_document_set_input_string(VALUE self, VALUE rb_input_string)
 {
   TSDocument *document;
   Check_Type(rb_input_string, T_STRING);
@@ -69,7 +69,7 @@ VALUE rb_document_set_input_string(VALUE self, VALUE rb_input_string)
  *
  * Returns true if successful.
  */
-VALUE rb_document_parse(VALUE self)
+static VALUE rb_document_parse(VALUE self)
 {
   TSDocument *document;
 
@@ -85,7 +85,7 @@ VALUE rb_document_parse(VALUE self)
  *
  * Returns a {Node}.
  */
-VALUE rb_document_root_node(VALUE self)
+static VALUE rb_document_root_node(VALUE self)
 {
   TSDocument *document;
 
@@ -95,10 +95,8 @@ VALUE rb_document_root_node(VALUE self)
   return rb_new_node(ts_node, document);
 }
 
-void init_document()
+void init_document(VALUE tree_sitter)
 {
-  VALUE tree_sitter = rb_define_module("TreeSitter");
-
   rb_eDocumentError = rb_define_class_under(tree_sitter, "DocumentError", rb_eStandardError);
 
   VALUE rb_cDocument = rb_define_class_under(tree_sitter, "Document", rb_cObject);
