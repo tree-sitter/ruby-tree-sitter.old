@@ -3,17 +3,12 @@
 VALUE rb_cNode;
 VALUE rb_cPoint;
 
-static void rb_node_free(void *n)
-{
-  free(n);
-}
-
 VALUE rb_new_node(TSNode ts_node, TSDocument *ts_document)
 {
-  AstNode *node = malloc(sizeof(AstNode));
+  AstNode *node = xmalloc(sizeof(AstNode));
   node->ts_node = ts_node;
   node->ts_document = ts_document;
-  return Data_Wrap_Struct(rb_cNode, NULL, rb_node_free, node);
+  return Data_Wrap_Struct(rb_cNode, NULL, xfree, node);
 }
 
 /*
@@ -42,11 +37,6 @@ static VALUE rb_node_type(VALUE self)
   return rb_str_new_cstr(ts_node_type(node->ts_node, node->ts_document));
 }
 
-void rb_point_free(void *p)
-{
-  free(p);
-}
-
 /*
  * Public: Get the starting position for a node.
  *
@@ -58,10 +48,10 @@ static VALUE rb_node_start_point(VALUE self)
   Data_Get_Struct(self, AstNode, node);
 
   TSPoint start = ts_node_start_point(node->ts_node);
-  Point *point = malloc(sizeof(Point));
+  Point *point = xmalloc(sizeof(Point));
   point->ts_point = start;
 
-  return Data_Wrap_Struct(rb_cPoint, NULL, rb_point_free, point);
+  return Data_Wrap_Struct(rb_cPoint, NULL, xfree, point);
 }
 
 /*
@@ -76,10 +66,10 @@ static VALUE rb_node_end_point(VALUE self)
 
   TSPoint start = ts_node_end_point(node->ts_node);
 
-  Point *point = malloc(sizeof(Point));
+  Point *point = xmalloc(sizeof(Point));
   point->ts_point = start;
 
-  return Data_Wrap_Struct(rb_cPoint, NULL, rb_point_free, point);
+  return Data_Wrap_Struct(rb_cPoint, NULL, xfree, point);
 }
 
 /*
