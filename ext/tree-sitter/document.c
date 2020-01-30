@@ -1,5 +1,11 @@
 #include "document.h"
 
+#if SIZEOF_VOIDP == SIZEOF_LONG
+# define NUM2PTR(x)   ((void*)(NUM2ULONG(x)))
+#else
+# define NUM2PTR(x)   ((void*)(NUM2ULL(x)))
+#endif
+
 VALUE rb_cDocument;
 
 /*
@@ -18,66 +24,22 @@ static VALUE rb_document_alloc(VALUE self)
 }
 
 /*
- * Public: Creates a new document
+ * Private: Set the language type of a document.
  *
- */
-VALUE rb_document_new(VALUE self, VALUE rb_input_string, VALUE rb_options)
-{
-  TSDocument *document;
-  VALUE rb_language;
-
-  Check_Type(rb_input_string, T_STRING);
-  Check_Type (rb_options, T_HASH);
-
-  rb_language = rb_hash_aref(rb_options, CSTR2SYM("language"));
-  Check_Type(rb_language, T_STRING);
-
-  Data_Get_Struct(self, TSDocument, document);
-
-  rb_document_set_language(self, rb_language);
-  rb_document_set_input_string(self, rb_input_string);
-  rb_document_parse(self);
-
-  return self;
-}
-
-
-/*
- * Public: Set the language type of a document.
- *
- * lang - A {String} identifying the language.
+ * ptr - A {Numeric} address of the function that returns the data type for treesitter.
  *
  * Returns nothing.
  */
-VALUE rb_document_set_language(VALUE self, VALUE lang)
+static VALUE rb_document_set_language(VALUE self, VALUE ptr)
 {
   TSDocument *document;
-  char *language_name;
-  void *handle;
-  char *error;
-  Check_Type(lang, T_STRING);
-
-  language_name = StringValueCStr(lang);
-
   const TSLanguage * (*language_func)();
-
-  handle = dlopen(BUNDLE_PATH, RTLD_LAZY);
-  if (!handle) {
-    rb_raise(rb_eDocumentError, "%s", dlerror());
-  }
-
-  dlerror();    /* Clear any existing error */
-
-  *(void **) (&language_func) = dlsym(handle, language_name);
-
-  if ((error = dlerror()) != NULL)  {
-    rb_raise(rb_eDocumentError, "%s", error);
-  }
 
   Data_Get_Struct(self, TSDocument, document);
 
+  language_func = NUM2PTR(ptr);
+
   ts_document_set_language(document, (*language_func)());
-  dlclose(handle);
 
   return Qnil;
 }
@@ -89,7 +51,7 @@ VALUE rb_document_set_language(VALUE self, VALUE lang)
  *
  * Returns nothing.
  */
-VALUE rb_document_set_input_string(VALUE self, VALUE rb_input_string)
+static VALUE rb_document_set_input_string(VALUE self, VALUE rb_input_string)
 {
   TSDocument *document;
   Check_Type(rb_input_string, T_STRING);
@@ -107,7 +69,7 @@ VALUE rb_document_set_input_string(VALUE self, VALUE rb_input_string)
  *
  * Returns true if successful.
  */
-VALUE rb_document_parse(VALUE self)
+static VALUE rb_document_parse(VALUE self)
 {
   TSDocument *document;
 
@@ -123,7 +85,7 @@ VALUE rb_document_parse(VALUE self)
  *
  * Returns a {Node}.
  */
-VALUE rb_document_root_node(VALUE self)
+static VALUE rb_document_root_node(VALUE self)
 {
   TSDocument *document;
 
@@ -133,16 +95,14 @@ VALUE rb_document_root_node(VALUE self)
   return rb_new_node(ts_node, document);
 }
 
-void init_document()
+void init_document(VALUE tree_sitter)
 {
-  VALUE tree_sitter = rb_define_module("TreeSitter");
-
   rb_eDocumentError = rb_define_class_under(tree_sitter, "DocumentError", rb_eStandardError);
 
   VALUE rb_cDocument = rb_define_class_under(tree_sitter, "Document", rb_cObject);
   rb_define_alloc_func(rb_cDocument, rb_document_alloc);
-  rb_define_method(rb_cDocument, "initialize", rb_document_new, 2);
-  rb_define_method(rb_cDocument, "language=", rb_document_set_language, 1);
+  rb_define_const(rb_cDocument, "BUNDLE_PATH", rb_str_new2(BUNDLE_PATH));
+  rb_define_private_method(rb_cDocument, "set_language", rb_document_set_language, 1);
   rb_define_method(rb_cDocument, "input_string=", rb_document_set_input_string, 1);
   rb_define_method(rb_cDocument, "parse", rb_document_parse, 0);
   rb_define_method(rb_cDocument, "root_node", rb_document_root_node, 0);
