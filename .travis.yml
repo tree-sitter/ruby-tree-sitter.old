@@ -1,9 +1,8 @@
 language: ruby
 cache: bundler
 rvm:
-  - 2.3.6
-  - 2.4.3
-  - 2.5.0
+  - 2.6.5
+  - 2.7.0
 git:
   depth: 10
 
@@ -22,7 +21,7 @@ os:
 matrix:
   include:
     - script: bundle exec rake rubocop
-      rvm: 2.5.0
+      rvm: 2.6.5
 
 env:
   -TREE_SITTER_PARSER_DIR=$TRAVIS_BUILD_DIR/test/tree-sitter/fixtures/parsers
