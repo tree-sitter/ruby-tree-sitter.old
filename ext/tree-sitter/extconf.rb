@@ -15,7 +15,6 @@ end
 SITEARCH = RbConfig::CONFIG['sitearch']
 LIBDIR      = RbConfig::CONFIG['libdir']
 INCLUDEDIR  = RbConfig::CONFIG['includedir']
-DLEXT = RbConfig::CONFIG['DLEXT']
 
 ROOT = File.expand_path(File.join(File.dirname(__FILE__), '..', '..'))
 THIS_DIR = File.dirname(__FILE__)
@@ -24,8 +23,6 @@ OUT_DIR = File.join(THIS_DIR, 'out')
 TREE_SITTER_DIR = File.expand_path(File.join(File.dirname(__FILE__), 'tree-sitter'))
 TREE_SITTER_INCLUDE_DIR = File.join(TREE_SITTER_DIR, 'include')
 TREE_SITTER_SRC_DIR = File.join(TREE_SITTER_DIR, 'src')
-
-BUNDLE_PATH = File.join(ROOT, 'lib', 'tree-sitter', "treesitter.#{DLEXT}")
 
 HEADER_DIRS = [INCLUDEDIR, TREE_SITTER_INCLUDE_DIR]
 LIB_DIRS = [LIBDIR, OUT_DIR]
@@ -52,7 +49,7 @@ o_files = c_files.gsub(%r{(?:\S+)#{File::SEPARATOR}(\S+)#{File::SEPARATOR}(\w+)\
 flag = ENV['TRAVIS'] ? '-O0' : '-O2'
 
 $LDFLAGS << " -I#{TREE_SITTER_INCLUDE_DIR} -lruntime -lstdc++"
-$CFLAGS << " #{flag} -fPIC -std=c99 -I#{TREE_SITTER_SRC_DIR} -DBUNDLE_PATH='\"#{BUNDLE_PATH}\"'"
+$CFLAGS << " #{flag} -fPIC -std=c99 -I#{TREE_SITTER_SRC_DIR}"
 
 create_makefile('tree-sitter/treesitter')
 

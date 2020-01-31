@@ -61,7 +61,7 @@ VALUE rb_document_set_language(VALUE self, VALUE lang)
 
   const TSLanguage * (*language_func)();
 
-  handle = dlopen(BUNDLE_PATH, RTLD_LAZY);
+  handle = dlopen(NULL, RTLD_LAZY);
   if (!handle) {
     rb_raise(rb_eDocumentError, "%s", dlerror());
   }
