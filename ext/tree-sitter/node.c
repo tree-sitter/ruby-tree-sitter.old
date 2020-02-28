@@ -1,4 +1,14 @@
-#include "node.h"
+#include "ruby.h"
+#include "tree_sitter/api.h"
+
+typedef struct ast_node_type {
+  TSNode ts_node;
+  TSDocument *ts_document;
+} AstNode;
+
+typedef struct point_type {
+  TSPoint ts_point;
+} Point;
 
 VALUE rb_cNode;
 VALUE rb_cPoint;
@@ -8,7 +18,7 @@ static void rb_node_free(void *n)
   free(n);
 }
 
-VALUE rb_new_node(TSNode ts_node, TSDocument *ts_document)
+static VALUE rb_new_node(TSNode ts_node, TSDocument *ts_document)
 {
   AstNode *node = malloc(sizeof(AstNode));
   node->ts_node = ts_node;
@@ -21,7 +31,7 @@ VALUE rb_new_node(TSNode ts_node, TSDocument *ts_document)
  *
  * Returns a {String}.
  */
-VALUE rb_node_to_s(VALUE self)
+static VALUE rb_node_to_s(VALUE self)
 {
   AstNode *node;
   Data_Get_Struct(self, AstNode, node);
@@ -34,7 +44,7 @@ VALUE rb_node_to_s(VALUE self)
  *
  * Returns a {String}.
  */
-VALUE rb_node_type(VALUE self)
+static VALUE rb_node_type(VALUE self)
 {
   AstNode *node;
   Data_Get_Struct(self, AstNode, node);
@@ -52,7 +62,7 @@ void rb_point_free(void *p)
  *
  * Returns a {Point}.
  */
-VALUE rb_node_start_point(VALUE self)
+static VALUE rb_node_start_point(VALUE self)
 {
   AstNode *node;
   Data_Get_Struct(self, AstNode, node);
@@ -69,7 +79,7 @@ VALUE rb_node_start_point(VALUE self)
  *
  * Returns a {Point}.
  */
-VALUE rb_node_end_point(VALUE self)
+static VALUE rb_node_end_point(VALUE self)
 {
   AstNode *node;
   Data_Get_Struct(self, AstNode, node);
@@ -87,7 +97,7 @@ VALUE rb_node_end_point(VALUE self)
  *
  * Returns a {Boolean}.
  */
-VALUE rb_node_is_named(VALUE self)
+static VALUE rb_node_is_named(VALUE self)
 {
   AstNode *node;
   Data_Get_Struct(self, AstNode, node);
@@ -100,7 +110,7 @@ VALUE rb_node_is_named(VALUE self)
  *
  * Returns an {Integer}.
  */
-VALUE rb_node_child_count(VALUE self)
+static VALUE rb_node_child_count(VALUE self)
 {
   AstNode *node;
   Data_Get_Struct(self, AstNode, node);
@@ -117,7 +127,7 @@ VALUE rb_node_child_count(VALUE self)
  *
  * Returns an {Integer}.
  */
-VALUE rb_node_named_child_count(VALUE self)
+static VALUE rb_node_named_child_count(VALUE self)
 {
   AstNode *node;
   Data_Get_Struct(self, AstNode, node);
@@ -134,7 +144,7 @@ VALUE rb_node_named_child_count(VALUE self)
  *
  * Returns a {Node} or nil.
  */
-VALUE rb_node_first_child(VALUE self)
+static VALUE rb_node_first_child(VALUE self)
 {
   AstNode *node;
   Data_Get_Struct(self, AstNode, node);
@@ -153,7 +163,7 @@ VALUE rb_node_first_child(VALUE self)
  *
  * Returns a {Node} or nil.
  */
-VALUE rb_node_first_named_child(VALUE self)
+static VALUE rb_node_first_named_child(VALUE self)
 {
   AstNode *node;
   Data_Get_Struct(self, AstNode, node);
@@ -172,7 +182,7 @@ VALUE rb_node_first_named_child(VALUE self)
  *
  * Returns a {Node} or nil.
  */
-VALUE rb_node_last_child(VALUE self)
+static VALUE rb_node_last_child(VALUE self)
 {
   AstNode *node;
   Data_Get_Struct(self, AstNode, node);
@@ -191,7 +201,7 @@ VALUE rb_node_last_child(VALUE self)
  *
  * Returns a {Node} or nil.
  */
-VALUE rb_node_last_named_child(VALUE self)
+static VALUE rb_node_last_named_child(VALUE self)
 {
   AstNode *node;
   Data_Get_Struct(self, AstNode, node);
@@ -210,7 +220,7 @@ VALUE rb_node_last_named_child(VALUE self)
  *
  * Returns a {Node} or nil.
  */
-VALUE rb_node_child(VALUE self, VALUE child_index)
+static VALUE rb_node_child(VALUE self, VALUE child_index)
 {
   Check_Type(child_index, T_FIXNUM);
   uint32_t i = NUM2UINT(child_index);
@@ -233,7 +243,7 @@ VALUE rb_node_child(VALUE self, VALUE child_index)
  *
  * Returns a {Node} or nil.
  */
-VALUE rb_node_named_child(VALUE self, VALUE child_index)
+static VALUE rb_node_named_child(VALUE self, VALUE child_index)
 {
   Check_Type(child_index, T_FIXNUM);
   uint32_t i = NUM2UINT(child_index);
@@ -256,7 +266,7 @@ VALUE rb_node_named_child(VALUE self, VALUE child_index)
  *
  * Returns an {Integer}.
  */
-VALUE rb_point_row(VALUE self)
+static VALUE rb_point_row(VALUE self)
 {
   Point *point;
   Data_Get_Struct(self, Point, point);
@@ -268,14 +278,14 @@ VALUE rb_point_row(VALUE self)
  *
  * Returns an {Integer}.
  */
-VALUE rb_point_column(VALUE self)
+static VALUE rb_point_column(VALUE self)
 {
   Point *point;
   Data_Get_Struct(self, Point, point);
   return UINT2NUM(point->ts_point.column);
 }
 
-void init_node()
+void ruby_tree_sitter_init_node()
 {
   VALUE tree_sitter = rb_define_module("TreeSitter");
 

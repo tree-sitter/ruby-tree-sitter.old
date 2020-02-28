@@ -1,9 +1,12 @@
-#include "tree-sitter.h"
+#include "ruby.h"
 
-__attribute__((visibility("default"))) void Init_treesitter()
+void ruby_tree_sitter_init_parser();
+void ruby_tree_sitter_init_node();
+
+__attribute__((visibility("default")))
+void Init_treesitter()
 {
-  VALUE tree_sitter = rb_define_module("TreeSitter");
-
-  init_document();
-  init_node();
+  rb_define_module("TreeSitter");
+  ruby_tree_sitter_init_parser();
+  ruby_tree_sitter_init_node();
 }
