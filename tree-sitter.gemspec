@@ -24,11 +24,11 @@ Gem::Specification.new do |spec|
   spec.require_paths = %w(lib ext)
 
   spec.add_development_dependency 'awesome_print'
-  spec.add_development_dependency 'bundler', '~> 1.14'
+  spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'minitest', '~> 5.0'
   spec.add_development_dependency 'minitest-focus', '~> 1.1'
   spec.add_development_dependency 'pry-byebug', '~> 3.6'
-  spec.add_development_dependency 'rake', '~> 12.0'
+  spec.add_development_dependency 'rake', '~> 13.0'
   spec.add_development_dependency 'rake-compiler', '~> 0.9'
   spec.add_development_dependency 'rubocop'
   spec.add_development_dependency 'rubocop-github'
