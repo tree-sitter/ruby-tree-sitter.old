@@ -5,7 +5,7 @@ SOURCE_FILES = $(wildcard $(SRCDIR)/runtime/*.c) $(wildcard $(EXTERNALSDIR)/utf8
 OUTFILES = $(wildcard $(OUTDIR)/*.o)
 STATIC=libruntime.a
 
-CFLAGS = -fPIC -std=c99 -Wall -O2
+CFLAGS = -fPIC -std=c11 -Wall -O2
 INC = -I$(SRCDIR) -I$(SRCDIR)/../include  -I$(EXTERNALSDIR)/utf8proc
 
 OBJECT_FILES = $(SOURCE_FILES:%.c= %.o)
